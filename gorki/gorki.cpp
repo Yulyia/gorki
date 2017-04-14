@@ -124,7 +124,7 @@ void display(void)
 	glRotatef(270.0, 1.0, 0.0, 0.0);
 	glutSolidCube(1.0);
 	glPopMatrix();
-
+	glPushMatrix();
 
 
 	/* хочу сделать куб из графических примитивов и затекстурировать их - 
@@ -132,18 +132,36 @@ void display(void)
 	Но почему-то квадраты в упор не хотят превращаться в куб((
 		glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, textures[1]);		  //  текстура фона
+	*/
 
+	glRotatef(-20.0, 0.0, 1.0, 0.0);
 	glBegin(GL_QUADS);
 
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(0.0, 0.0, -1);
+	glVertex3f(-3.0, 0.0, 100);
 	glTexCoord2f(1.0, 0.0);
-	glVertex3f(0.0, 1.0, -1);
+	glVertex3f(3, 0.0, 100);
 	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0, 1.0, -1);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(1.0, 0.0, -1);
+	glVertex3f(3.0, 0.0, 1);
+	glTexCoord2f(-3.0, 1.0);
+	glVertex3f(0.0, 0.0, 1);
 	glEnd();
+
+	glPopMatrix();
+	/*
+	
+	glBegin(GL_QUADS);
+
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-3.0, 0.0, 100);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(-3, 3.0, 100);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-3.0, 3.0, 1);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-3.0, 0.0, 1);
+	glEnd();
+
 	*/
 	glPopMatrix();
 
