@@ -49,9 +49,9 @@ void reshape(int w, int h)
 	glLoadIdentity();
 
 	gluPerspective(
-		40.0,
+		60.0,
 		(GLfloat)w / h, 
-		1, 100.0);  
+		0.01, 1000.0);  
 	glMatrixMode(GL_MODELVIEW);
 
 	glLoadIdentity();
@@ -79,11 +79,15 @@ void display(void)
 	glPushMatrix();
 	
 	//исправила ошибку
-	glScalef(1.5, 1.5, 1.5);
+	
 
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	
+
+	
+	glPushMatrix();
+	glScalef(3, 3, 3);
 	glBegin(GL_QUADS);
 
 	glTexCoord2f(1.0, 1.0);
@@ -96,7 +100,7 @@ void display(void)
 	glVertex3f(1.0f, 1.0f, 1.0f);          // Право низ
 	glEnd();
 
-	glPushMatrix();
+	
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 
 	glBegin(GL_QUADS);
@@ -149,8 +153,23 @@ void display(void)
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
 
-	glPopMatrix();
 
+	glPopMatrix();
+	glPushMatrix();
+		
+	glTranslatef(-3, A, 0.0);
+//	glRotatef(270.0, 1.0, 0.0, 0.0);
+	glutSolidCube(1.0);
+
+	glPopMatrix();
+	glPushMatrix();
+
+	glTranslatef(-3, -1, 0.0);
+	glScalef(1, 4, 1);
+	glColor3d(1, 0, 1);
+	glutSolidCube(1.0);
+
+	glPopMatrix();
 	glFlush();
 }
 
@@ -158,7 +177,16 @@ void display(void)
 
 void Timer(int value)
 {
-	++A ;
+	if ((A <= 0.75) && (k == 0))
+	{
+		A += 0.02;
+	}
+	else
+	{
+		k = 1;
+		A -= 0.02;
+	}
+	if (A < -1) k = 0;
 	glutPostRedisplay();
 	glutTimerFunc(50, Timer, 0);
 }
@@ -174,7 +202,9 @@ int main(int argc, char** argv)
 	init();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
-//	glutTimerFunc(1000, Timer, 0);
+	glutTimerFunc(1000, Timer, 0);
+
 	glutMainLoop();
+	
 	return 0;
 }
