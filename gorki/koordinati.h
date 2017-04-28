@@ -1,10 +1,20 @@
 #pragma once
-class koordinati
+
+
+struct koordinati
 {
+	double x;
+	double y;
+	double z;
+	koordinati(double x, double y, double z) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+
 public:
-	koordinati();
-	double x, u, z;
-	char mass[500][3];
-	char  name[200];
+	void koord();
 };
+
+
 

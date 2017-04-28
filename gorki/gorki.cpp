@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <glut.h>   
 #include "glaux.h"
+#include  "koordinati.h"
 
 #pragma comment(lib, "legacy_stdio_definitions.lib")
 #pragma comment(lib, "opengl32.lib")      // Nnueea ia OpenGL32.lib 
@@ -51,7 +52,7 @@ void reshape(int w, int h)
 	gluPerspective(
 		60.0,
 		(GLfloat)w / h, 
-		0.01, 1000.0);  
+		0.01, 10000.0);  
 	glMatrixMode(GL_MODELVIEW);
 
 	glLoadIdentity();
@@ -74,19 +75,14 @@ void display(void)
 {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-	glPushMatrix();
-	
-	//исправила ошибку
-	
-
+	glClearColor(0, 0, 1, 1);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glColor3f(1.0f, 1.0f, 1.0f);
-	
 
 	
+
 	glPushMatrix();
+	
 	glScalef(3, 3, 3);
 	glBegin(GL_QUADS);
 
@@ -114,9 +110,7 @@ void display(void)
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
 
-
-
-
+	
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -156,18 +150,38 @@ void display(void)
 
 	glPopMatrix();
 	glPushMatrix();
-		
-	glTranslatef(-3, A, 0.0);
-//	glRotatef(270.0, 1.0, 0.0, 0.0);
+
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthMask(GL_FALSE);
+	
+	glTranslatef(-2.5, -1, -0.5);
+	glScalef(1, 4, 1);
+	glColor4f(0, 0.8, 0.8, 0.5);
 	glutSolidCube(1.0);
+	
+	
+
+	glTranslatef(0, A, 0.0);
+	//	glRotatef(270.0, 1.0, 0.0, 0.0);
+	glColor4f(0.8, 0.8, 0.8, 0.9);
+	glScalef(0.9, 0.25, 0.9);
+	glutSolidCube(1.0);
+	glColor4f(0.8, 0.5, 0.5, 1.0);
+	glutWireCube(1.0);
+	
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 
 	glPopMatrix();
 	glPushMatrix();
 
-	glTranslatef(-3, -1, 0.0);
+	glTranslatef(-2.5, -1, -0.5);
 	glScalef(1, 4, 1);
-	glColor3d(1, 0, 1);
-	glutSolidCube(1.0);
+	glColor4f(0.3, 0.3, 0.5, 1.0);
+	glLineWidth(5);
+	glutWireCube(1.0);
 
 	glPopMatrix();
 	glFlush();
@@ -175,9 +189,27 @@ void display(void)
 
 
 
+void drow()
+{
+
+	double AX0, AY0, WidthTrace, A0D0, DX0, DY0, A0E0, A0B0;
+	WidthTrace = 0.2;
+	//не знаю как мне взять переменные из класса
+//	AX0 = x1 - x0;
+//	AY0 = y1 - y0;
+	//оператором поворота на 90 градусов влево на вектор ?
+	//A0D0 = Quaternion.Euler(0, 90, 0) * A0D0;
+	//или так
+	DX0 = AX0 * 0 - AY0 *1 ;
+	DY0= AX0 * 1 + AY0 * 0;
+	A0D0 = sqrt(DX0*DX0 + DY0*DY0);
+	A0E0 = (1 /  A0D0 ) * A0D0;
+	A0B0 = (WidthTrace / 2.0) * A0E0;
+}
+
 void Timer(int value)
 {
-	if ((A <= 0.75) && (k == 0))
+	if ((A <= 0.3) && (k == 0))
 	{
 		A += 0.02;
 	}
@@ -186,7 +218,7 @@ void Timer(int value)
 		k = 1;
 		A -= 0.02;
 	}
-	if (A < -1) k = 0;
+	if (A <- 0.3) k = 0;
 	glutPostRedisplay();
 	glutTimerFunc(50, Timer, 0);
 }
@@ -198,7 +230,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB
 		| GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
-	glutCreateWindow(argv[0]);
+	glutCreateWindow("practica");
 	init();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
