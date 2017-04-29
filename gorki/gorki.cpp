@@ -1,11 +1,12 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "stdafx.h"
 #include <iostream> 
 #include <windows.h>
 #include <glut.h>   
 #include "glaux.h"
+#include <fstream>
 #include  "koordinati.h"
+#include "trajectoryandtrace.h"
 
 #pragma comment(lib, "legacy_stdio_definitions.lib")
 #pragma comment(lib, "opengl32.lib")      // Nnueea ia OpenGL32.lib 
@@ -17,7 +18,6 @@
 using namespace std;
 
 
-
 float A = 0.0;
 int k = 0;
 
@@ -25,7 +25,7 @@ unsigned int textures[6];
 
 void LoadTextures()
 {
-	AUX_RGBImageRec *texture1 = auxDIBImageLoadA("небо.bmp");
+	AUX_RGBImageRec *texture1 = auxDIBImageLoadA("nebo.bmp");
 	glGenTextures(1, &textures[0]);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -33,7 +33,7 @@ void LoadTextures()
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, texture1->sizeX, texture1->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, texture1->data);
 
 
-	AUX_RGBImageRec *texture2 = auxDIBImageLoadA("травка.bmp");
+	AUX_RGBImageRec *texture2 = auxDIBImageLoadA("trava.bmp");
 	glGenTextures(1, &textures[1]);
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -70,6 +70,11 @@ void init(void)
 	glEnable(GL_DEPTH_TEST);
 
 }
+
+
+
+
+
 
 void display(void)
 {
@@ -164,7 +169,6 @@ void display(void)
 	
 
 	glTranslatef(0, A, 0.0);
-	//	glRotatef(270.0, 1.0, 0.0, 0.0);
 	glColor4f(0.8, 0.8, 0.8, 0.9);
 	glScalef(0.9, 0.25, 0.9);
 	glutSolidCube(1.0);
@@ -183,29 +187,14 @@ void display(void)
 	glLineWidth(5);
 	glutWireCube(1.0);
 
+
 	glPopMatrix();
 	glFlush();
 }
 
 
 
-void drow()
-{
 
-	double AX0, AY0, WidthTrace, A0D0, DX0, DY0, A0E0, A0B0;
-	WidthTrace = 0.2;
-	//не знаю как мне взять переменные из класса
-//	AX0 = x1 - x0;
-//	AY0 = y1 - y0;
-	//оператором поворота на 90 градусов влево на вектор ?
-	//A0D0 = Quaternion.Euler(0, 90, 0) * A0D0;
-	//или так
-	DX0 = AX0 * 0 - AY0 *1 ;
-	DY0= AX0 * 1 + AY0 * 0;
-	A0D0 = sqrt(DX0*DX0 + DY0*DY0);
-	A0E0 = (1 /  A0D0 ) * A0D0;
-	A0B0 = (WidthTrace / 2.0) * A0E0;
-}
 
 void Timer(int value)
 {
@@ -234,8 +223,16 @@ int main(int argc, char** argv)
 	init();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
-	glutTimerFunc(1000, Timer, 0);
 
+//	glutTimerFunc(1000, Timer, 0);
+	int loop1 = 0;
+	const int sizeMasKoordinati = 5010;
+	double A[sizeMasKoordinati][3];
+	A[sizeMasKoordinati][3] = sozdMass();
+	loop1 = razmer();
+//вот не знаю как передать(((	
+	postr(A,loop1);
+	
 	glutMainLoop();
 	
 	return 0;

@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef koordinati1
+#define koordinati1
+
 
 struct koordinati
 {
@@ -12,9 +15,7 @@ struct koordinati
 		this->z = z;
 	}
 
-public:
-	void koord();
 };
 
-
+#endif
 
