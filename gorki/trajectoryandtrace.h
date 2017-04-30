@@ -4,9 +4,8 @@
 #define trajectoryandtrace
 
 	
-double sozdMass();
-int razmer();
-void postr( double * mass, int razmer);
+void sozdanieMassKoord(koordinati **cordArray, int * size);
+void postroenieTrassi(koordinati *mass, int  size);
 
 
 

@@ -9,15 +9,12 @@
 
 
 using namespace std;
-
-double sozdMass()
+void sozdanieMassKoord(koordinati **cordArray, int * size)
 {
 	const int sizeMasKoordinati = 5010;
 	char fileName[] = "trajectory.csv";
-	koordinati *masKoordinati[sizeMasKoordinati];
-	double A[sizeMasKoordinati][3];
-	//	glFrustum(false);
 	ifstream fileObject;
+	*cordArray = new koordinati[sizeMasKoordinati];
 	fileObject.open(fileName);
 	int loop1 = 0;
 	while (!fileObject.eof())
@@ -28,82 +25,44 @@ double sozdMass()
 								   //Это C++, а не Си, так что тип double считается без проблем
 		fileObject >> x >> charTemp1 >> y >> charTemp2 >> z;
 
-		koordinati *onePoint = new koordinati(x, y, z);//а это использование конструктора с тремя параметрами
-													   //ниже код уже вам писал
-		masKoordinati[loop1] = onePoint;
-
-		 A[loop1][1] = masKoordinati[loop1]->x;
-		 A[loop1][2] = masKoordinati[loop1]->y;
-		 A[loop1][3] = masKoordinati[loop1]->z;
+		(*cordArray)[loop1] = koordinati(x, y, z);
 		loop1++;
+
 	}
-	return A[loop1][3];
+	*size = loop1;
 	fileObject.close();
-}
-
-
-int razmer()
-{
-	const int sizeMasKoordinati = 5010;
-	char fileName[] = "trajectory.csv";
-	koordinati *masKoordinati[sizeMasKoordinati];
-	double A[sizeMasKoordinati][3];
-	//	glFrustum(false);
-	ifstream fileObject;
-	fileObject.open(fileName);
-	int loop1 = 0;
-	while (!fileObject.eof())
-	{
-		double x, y, z;//это простые локальные переменные
-		char charTemp1, charTemp2; //это для точек с запятой
-								   //как объект “cin” с консолью, так и “fileObject” c файлом
-								   //Это C++, а не Си, так что тип double считается без проблем
-		fileObject >> x >> charTemp1 >> y >> charTemp2 >> z;
-
-		koordinati *onePoint = new koordinati(x, y, z);//а это использование конструктора с тремя параметрами
-													   //ниже код уже вам писал
-		masKoordinati[loop1] = onePoint;
-
-		A[loop1][1] = masKoordinati[loop1]->x;
-		A[loop1][2] = masKoordinati[loop1]->y;
-		A[loop1][3] = masKoordinati[loop1]->z;
-		loop1++;
-	}
-	return loop1;
-	fileObject.close();
+	return;
 }
 
 
 
-void postr(double * mass, int razmer)
+
+void postroenieTrassi(koordinati * mass, int size)
 {
 	double AX0, AY0, WidthTrace, A0D0, DX0, DY0, A0E0, A0B0, BX0, BY0, CX0, CY0;
 	double BX1, BY1, CX1, CY1, AX1, AY1, A1D0, DX1, DY1, A1E0, A1B0;
 	double x = 0, y = 0, z = 0, x0 = 0, y0 = 0, z0 = 0, x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
 
-	AX0 = 0; AY0 = 0; WidthTrace = 0.2; A0D0 = 0; DX0 = 0; DY0 = 0;
+	AX0 = 0; AY0 = 0; WidthTrace = 0.4; A0D0 = 0; DX0 = 0; DY0 = 0;
 	A0E0 = 0; A0B0 = 0; BX0 = 0; BY0 = 0; CX0 = 0; CY0 = 0;
 	BX1 = 0; BY1 = 0; CX1 = 0; CY1 = 0; AX1 = 0; AY1 = 0;
 	A1D0 = 0; DX1 = 0; DY1 = 0; A1E0 = 0; A1B0 = 0;
 
 	int loop1 = 0;
 
-	for (loop1; loop1 < razmer - 2; loop1++)
+	for (loop1; loop1 < size - 2; loop1++)
 	{
-		x0 = mass[loop1][1];
-		y0 = mass[loop1][2];
-		z0 = mass[loop1][3];
-
-
-		x1 = mass[loop1 + 1][1];
-		y1 = mass[loop1 + 1][2];
-		z1 = mass[loop1 + 1][3];
-
-
-
-		x2 = mass[loop1 + 2][1];
-		y2 = mass[loop1 + 2][2];
-		z2 = mass[loop1 + 2][3];
+		x0 = mass[loop1].x;
+		y0 = mass[loop1].y;
+		z0 = mass[loop1].z;
+		
+		x1 = mass[loop1 + 1].x;
+		y1 = mass[loop1 + 1].y;
+		z1 = mass[loop1 + 1].z;
+		
+		x2 = mass[loop1 + 2].x;
+		y2 = mass[loop1 + 2].y;
+		z2 = mass[loop1 + 2].z;
 		
 
 		AX0 = x1 - x0;
@@ -121,7 +80,7 @@ void postr(double * mass, int razmer)
 		CX0 = (--A0B0) + AX0;
 		CY0 = (--A0B0) + AY0;
 
-		//расчёт вершин для точек В1 и С1
+	/*	//расчёт вершин для точек В1 и С1
 		AX1 = x2 - x1;
 		AY1 = y2 - y1;
 		DX1 = AX1 * 0 - AY1 * 1;
@@ -133,10 +92,9 @@ void postr(double * mass, int razmer)
 		BY1 = A1B0 + AY1;
 		CX1 = (--A1B0) + AX1;
 		CY1 = (--A1B0) + AY1;
+*/
 
-
-		//не пойму почему не соединяются каждые три вершины
-		//они выводятся правильно по координатам, но тройками
+		
 		glBegin(GL_LINE_STRIP);
 		glColor3d(0, 0, 0);
 		glVertex3f(x0, y0, z0);
@@ -144,7 +102,20 @@ void postr(double * mass, int razmer)
 		glVertex3f(x2, y2, z2);
 		glEnd();
 
-		loop1++;
+		
+
+		glShadeModel(GL_FLAT);
+		glBegin(GL_LINE_STRIP);
+
+		glColor3d(0, 0, 0.6);
+		glVertex3f(BX0, BY0, z0); //B0
+		glVertex3f(CX0, CY0, z0); //C0
+		glVertex3f(CX1, CY1, z1); //C1
+	//	glVertex3f(BX1, BY1, z1); //B1
+		
+				
+		glEnd();
+				
 	}
 }
 

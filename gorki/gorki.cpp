@@ -189,6 +189,12 @@ void display(void)
 
 
 	glPopMatrix();
+	
+	koordinati  *pArray = NULL;
+	int size = 0;
+	sozdanieMassKoord(&pArray, &size);
+	postroenieTrassi(pArray, size);
+	
 	glFlush();
 }
 
@@ -215,25 +221,15 @@ void Timer(int value)
 
 int main(int argc, char** argv)
 {
-	glutInit(&argc, argv);
+	glutInit(&argc, argv);//Инициализация GLUT 
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB
-		| GLUT_DEPTH);
-	glutInitWindowSize(500, 500);
-	glutCreateWindow("practica");
+		| GLUT_DEPTH);//режим отображения информации
+	glutInitWindowSize(500, 500);//Установка параметров окна
+	glutCreateWindow("practica");//Создание окна
 	init();
-	glutReshapeFunc(reshape);
-	glutDisplayFunc(display);
-
-//	glutTimerFunc(1000, Timer, 0);
-	int loop1 = 0;
-	const int sizeMasKoordinati = 5010;
-	double A[sizeMasKoordinati][3];
-	A[sizeMasKoordinati][3] = sozdMass();
-	loop1 = razmer();
-//вот не знаю как передать(((	
-	postr(A,loop1);
-	
-	glutMainLoop();
+	glutReshapeFunc(reshape); //Установка функций, отвечающих за изменении формы окна
+	glutDisplayFunc(display);//Установка функций, отвечающих за рисование в окне 
+	glutMainLoop();//Вход в главный цикл GLUT
 	
 	return 0;
 }
