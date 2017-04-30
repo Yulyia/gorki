@@ -55,46 +55,50 @@ void postroenieTrassi(koordinati * mass, int size)
 		x0 = mass[loop1].x;
 		y0 = mass[loop1].y;
 		z0 = mass[loop1].z;
-		
+
 		x1 = mass[loop1 + 1].x;
 		y1 = mass[loop1 + 1].y;
 		z1 = mass[loop1 + 1].z;
-		
+
 		x2 = mass[loop1 + 2].x;
 		y2 = mass[loop1 + 2].y;
 		z2 = mass[loop1 + 2].z;
-		
+
 
 		AX0 = x1 - x0;
 		AY0 = y1 - y0;
-		//не уверена на счёт поворота
-		DX0 = AX0 * 0 - AY0 * 1;
-		DY0 = AX0 * 1 + AY0 * 0;
+		DX0 = -AY0;
+		DY0 = AX0;
+
 		//длина вектора А0D0
 		A0D0 = sqrt(DX0*DX0 + DY0*DY0);
-		//однонаправленный вектор
-		A0E0 = (1 / A0D0) * A0D0;
-		A0B0 = (WidthTrace / 2.0) * A0E0;
-		BX0 = A0B0 + AX0;
-		BY0 = A0B0 + AY0;
-		CX0 = (--A0B0) + AX0;
-		CY0 = (--A0B0) + AY0;
+		//единичный вектор
+		float A0E0X = DX0 / A0D0;
+		float A0E0Y = DY0 / A0D0;
 
-	/*	//расчёт вершин для точек В1 и С1
+		BX0 = (WidthTrace / 2.0) * A0E0X + x0;
+		BY0 = (WidthTrace / 2.0) * A0E0Y + y0;
+
+		CX0 = -1 * (WidthTrace / 2.0) * A0E0X + x0;
+		CY0 = -1 * (WidthTrace / 2.0) * A0E0Y + y0;
+
+
+		//расчёт вершин для точек В1 и С1
 		AX1 = x2 - x1;
 		AY1 = y2 - y1;
-		DX1 = AX1 * 0 - AY1 * 1;
-		DY1 = AX1 * 1 + AY1 * 0;
+		DX1 = -AY1;
+		DY1 = AX1;
 		A1D0 = sqrt(DX1*DX1 + DY1*DY1);
-		A1E0 = (1 / A0D0) * A0D0;
-		A1B0 = (WidthTrace / 2.0) * A1E0;
-		BX1 = A1B0 + AX1;
-		BY1 = A1B0 + AY1;
-		CX1 = (--A1B0) + AX1;
-		CY1 = (--A1B0) + AY1;
-*/
+		float A1E1X = (1 / A1D0) * DX1;
+		float A1E1Y = (1 / A1D0) * DY1;
 
-		
+		BX1 = (WidthTrace / 2.0) * A1E1X + x1;
+		BY1 = (WidthTrace / 2.0) * A1E1Y + y1;
+
+		CX1 = -1 * (WidthTrace / 2.0) * A1E1X + x1;
+		CY1 = -1 * (WidthTrace / 2.0) * A1E1Y + y1;
+
+
 		glBegin(GL_LINE_STRIP);
 		glColor3d(0, 0, 0);
 		glVertex3f(x0, y0, z0);
@@ -102,20 +106,17 @@ void postroenieTrassi(koordinati * mass, int size)
 		glVertex3f(x2, y2, z2);
 		glEnd();
 
-		
-
 		glShadeModel(GL_FLAT);
-		glBegin(GL_LINE_STRIP);
-
-		glColor3d(0, 0, 0.6);
+		glBegin(GL_TRIANGLE_STRIP);
+		glColor3d(0, 0, 0.5);
 		glVertex3f(BX0, BY0, z0); //B0
 		glVertex3f(CX0, CY0, z0); //C0
 		glVertex3f(CX1, CY1, z1); //C1
-	//	glVertex3f(BX1, BY1, z1); //B1
-		
-				
+		glColor3d(0, 1, 0.0);
+		glVertex3f(BX1, BY1, z1); //B1 
+			
+
 		glEnd();
-				
 	}
 }
 
