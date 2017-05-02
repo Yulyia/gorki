@@ -233,6 +233,7 @@ int main(int argc, char** argv)
 	init();
 	glutReshapeFunc(reshape); //Установка функций, отвечающих за изменении формы окна
 	glutDisplayFunc(display);//Установка функций, отвечающих за рисование в окне 
+//	glutTimerFunc(1000, Timer, 0);
 	glutMainLoop();//Вход в главный цикл GLUT
 	
 	return 0;
