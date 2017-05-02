@@ -189,11 +189,15 @@ void display(void)
 
 
 	glPopMatrix();
-	
-	koordinati  *pArray = NULL;
+	const int sizeMasKoordinati = 5010;
+	koordinati  *MasKoord[sizeMasKoordinati];
+	for (int a=0; a<sizeMasKoordinati; a++)
+	{
+		MasKoord[a] = NULL;
+	}
 	int size = 0;
-	sozdanieMassKoord(&pArray, &size);
-	postroenieTrassi(pArray, size);
+	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
+	postroenieTrassi(MasKoord, size);
 	
 	glFlush();
 }

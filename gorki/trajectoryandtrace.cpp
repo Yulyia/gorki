@@ -9,15 +9,13 @@
 
 
 using namespace std;
-void sozdanieMassKoord(koordinati **cordArray, int * size)
+int sozdanieMassKoord(koordinati *cordArray[], int  size)
 {
-	const int sizeMasKoordinati = 5010;
 	char fileName[] = "trajectory.csv";
 	ifstream fileObject;
-	*cordArray = new koordinati[sizeMasKoordinati];
 	fileObject.open(fileName);
 	int loop1 = 0;
-	while (!fileObject.eof())
+	while ((!fileObject.eof()) && (loop1< size))
 	{
 		double x, y, z;//это простые локальные переменные
 		char charTemp1, charTemp2; //это для точек с запятой
@@ -25,25 +23,27 @@ void sozdanieMassKoord(koordinati **cordArray, int * size)
 								   //Это C++, а не Си, так что тип double считается без проблем
 		fileObject >> x >> charTemp1 >> y >> charTemp2 >> z;
 
-		(*cordArray)[loop1] = koordinati(x, y, z);
+		koordinati *Object1 = NULL;
+		Object1 = new koordinati(x, y, z);
+		cordArray[loop1] = Object1;
 		loop1++;
 
 	}
-	*size = loop1;
+	
 	fileObject.close();
-	return;
+	return loop1;
 }
 
 
 
 
-void postroenieTrassi(koordinati * mass, int size)
+void postroenieTrassi(koordinati *mass[], int size)
 {
 	double AX0, AY0, WidthTrace, A0D0, DX0, DY0, A0E0, A0B0, BX0, BY0, CX0, CY0;
 	double BX1, BY1, CX1, CY1, AX1, AY1, A1D0, DX1, DY1, A1E0, A1B0;
 	double x = 0, y = 0, z = 0, x0 = 0, y0 = 0, z0 = 0, x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
 
-	AX0 = 0; AY0 = 0; WidthTrace = 0.4; A0D0 = 0; DX0 = 0; DY0 = 0;
+	AX0 = 0; AY0 = 0; WidthTrace = 0.8; A0D0 = 0; DX0 = 0; DY0 = 0;
 	A0E0 = 0; A0B0 = 0; BX0 = 0; BY0 = 0; CX0 = 0; CY0 = 0;
 	BX1 = 0; BY1 = 0; CX1 = 0; CY1 = 0; AX1 = 0; AY1 = 0;
 	A1D0 = 0; DX1 = 0; DY1 = 0; A1E0 = 0; A1B0 = 0;
@@ -52,17 +52,17 @@ void postroenieTrassi(koordinati * mass, int size)
 
 	for (loop1; loop1 < size - 2; loop1++)
 	{
-		x0 = mass[loop1].x;
-		y0 = mass[loop1].y;
-		z0 = mass[loop1].z;
+		x0 = mass[loop1]->x;
+		y0 = mass[loop1]->y;
+		z0 = mass[loop1]->z;
 
-		x1 = mass[loop1 + 1].x;
-		y1 = mass[loop1 + 1].y;
-		z1 = mass[loop1 + 1].z;
+		x1 = mass[loop1 + 1]->x;
+		y1 = mass[loop1 + 1]->y;
+		z1 = mass[loop1 + 1]->z;
 
-		x2 = mass[loop1 + 2].x;
-		y2 = mass[loop1 + 2].y;
-		z2 = mass[loop1 + 2].z;
+		x2 = mass[loop1 + 2]->x;
+		y2 = mass[loop1 + 2]->y;
+		z2 = mass[loop1 + 2]->z;
 
 
 		AX0 = x1 - x0;
@@ -72,6 +72,7 @@ void postroenieTrassi(koordinati * mass, int size)
 
 		//длина вектора А0D0
 		A0D0 = sqrt(DX0*DX0 + DY0*DY0);
+		
 		//единичный вектор
 		float A0E0X = DX0 / A0D0;
 		float A0E0Y = DY0 / A0D0;
@@ -97,7 +98,7 @@ void postroenieTrassi(koordinati * mass, int size)
 
 		CX1 = -1 * (WidthTrace / 2.0) * A1E1X + x1;
 		CY1 = -1 * (WidthTrace / 2.0) * A1E1Y + y1;
-
+		
 
 		glBegin(GL_LINE_STRIP);
 		glColor3d(0, 0, 0);
@@ -105,16 +106,23 @@ void postroenieTrassi(koordinati * mass, int size)
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x2, y2, z2);
 		glEnd();
-
+		
 		glShadeModel(GL_FLAT);
 		glBegin(GL_TRIANGLE_STRIP);
 		glColor3d(0, 0, 0.5);
 		glVertex3f(BX0, BY0, z0); //B0
 		glVertex3f(CX0, CY0, z0); //C0
 		glVertex3f(CX1, CY1, z1); //C1
-		glColor3d(0, 1, 0.0);
+		glColor3d(0, 0, 0.9);
 		glVertex3f(BX1, BY1, z1); //B1 
 			
+		const double q = -0.1;
+		glColor3d(0, 0.5, 0.5);
+		glVertex3f(BX0, BY0, z0+q); //B0
+		glVertex3f(CX1, CY1, z1 + q); //C1
+		glVertex3f(CX0, CY0, z0 + q); //C0
+		glColor3d(0.5, 0.9, 0.0);
+		glVertex3f(BX1, BY1, z1 + q); //B1
 
 		glEnd();
 	}
