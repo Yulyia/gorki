@@ -43,7 +43,7 @@ void postroenieTrassi(koordinati *mass[], int size)
 	double BX1, BZ1, CX1, CZ1, AX1, AZ1, A1D0, DX1, DZ1, A1E0, A1B0;
 	double x = 0, y = 0, z = 0, x0 = 0, y0 = 0, z0 = 0, x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
 
-	AX0 = 0; AZ0 = 0; WidthTrace = 0.8; A0D0 = 0; DX0 = 0; DZ0 = 0;
+	AX0 = 0; AZ0 = 0; WidthTrace = 0.4; A0D0 = 0; DX0 = 0; DZ0 = 0;
 	A0E0 = 0; A0B0 = 0; BX0 = 0; BZ0 = 0; CX0 = 0; CZ0 = 0;
 	BX1 = 0; BZ1 = 0; CX1 = 0; CZ1 = 0; AX1 = 0; AZ1 = 0;
 	A1D0 = 0; DX1 = 0; DZ1 = 0; A1E0 = 0; A1B0 = 0;
@@ -101,7 +101,7 @@ void postroenieTrassi(koordinati *mass[], int size)
 
 		CX1 = -1 * (WidthTrace / 2.0) * A1E1X + x1;
 		CZ1 = -1 * (WidthTrace / 2.0) * A1E1Z + z1;
-		
+		/*
 		
 		glBegin(GL_LINE_STRIP);
 		glColor3d(0, 0, 0);
@@ -109,8 +109,8 @@ void postroenieTrassi(koordinati *mass[], int size)
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x2, y2, z2);
 		glEnd();
+		*/
 		
-
 		glShadeModel(GL_FLAT);
 		glBegin(GL_TRIANGLE_STRIP);
 		glColor3d(0, 0, 0.5);
@@ -120,15 +120,16 @@ void postroenieTrassi(koordinati *mass[], int size)
 		glColor3d(0, 0, 0.9);
 		glVertex3f(BX1, y1, BZ1); //B1 
 			
-		const double q = -0.3;
+		const double q = -0.1;
 		glColor3d(0, 0.5, 0.5);
-		glVertex3f(BX0, y0, BZ0 +q); //B0
-		glVertex3f(CX1, y1, CZ1 + q); //C1
-		glVertex3f(CX0, y0, CZ0 + q); //C0
-		glColor3d(0.5, 0.9, 0.0);
-		glVertex3f(BX1, y1, BZ1 + q); //B1
+		glVertex3f(BX0, y0 + q, BZ0 ); //B0
+		glVertex3f(CX1, y1 + q, CZ1); //C1
+		glVertex3f(CX0, y0 + q, CZ0 ); //C0
+		glColor3d(0.5, 0.9, 1.0);
+		glVertex3f(BX1, y1 + q, BZ1); //B1
 
 		glEnd();
+		
 	}
 }
 

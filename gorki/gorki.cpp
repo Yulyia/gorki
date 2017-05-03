@@ -198,6 +198,8 @@ void display(void)
 	int size = 0;
 	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
 	postroenieTrassi(MasKoord, size);
+
+	
 	
 	glFlush();
 }
