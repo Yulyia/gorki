@@ -20,8 +20,13 @@ using namespace std;
 
 float A = 0.0;
 int k = 0;
-
+int loop1 = 0;
+double X0 = 0, Y0 = 0, Z0 = 0, X1 = 0, Y1 = 0, Z1 = 0;
 unsigned int textures[6];
+const int sizeMasKoordinati = 5010;
+koordinati  *MasKoord[sizeMasKoordinati];
+
+
 
 void LoadTextures()
 {
@@ -41,6 +46,10 @@ void LoadTextures()
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, texture2->sizeX, texture2->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, texture2->data);
 	}
 
+
+
+
+
 void reshape(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
@@ -54,12 +63,11 @@ void reshape(int w, int h)
 		(GLfloat)w / h, 
 		0.01, 10000.0);  
 	glMatrixMode(GL_MODELVIEW);
-
-	glLoadIdentity();
-	gluLookAt(
-		0.0f, 0.0f, 8.0f,
-		0.0f, 0.0f, 0.0f, 
-		0.0f, 1.0f, 0.0f);
+		glLoadIdentity();
+		gluLookAt(
+			0.0f, 0.0f, 8.0f,
+			0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f);
 }
 
 
@@ -72,20 +80,13 @@ void init(void)
 }
 
 
-
-
-
-
 void display(void)
-{
-	
+{	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0, 0, 1, 1);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glColor3f(1.0f, 1.0f, 1.0f);
-
 	
-
 	glPushMatrix();
 	
 	glScalef(3, 3, 3);
@@ -100,8 +101,7 @@ void display(void)
 	glTexCoord2f(1.0, 0.0);
 	glVertex3f(1.0f, 1.0f, 1.0f);          // Право низ
 	glEnd();
-
-	
+		
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 
 	glBegin(GL_QUADS);
@@ -114,8 +114,7 @@ void display(void)
 	glTexCoord2f(1.0, 0.0);
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
-
-	
+		
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -152,11 +151,22 @@ void display(void)
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(1.0f, 1.0f, 1.0f);          // Верх право квадрата (Перед)
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-1.0f, 1.0f, 1.0f);          // Верх лево
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-1.0f, -1.0f, 1.0f);          // Низ лево
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(1.0f, -1.0f, 1.0f);          // Низ право
+	glEnd();
 
+	
 	glPopMatrix();
 	glPushMatrix();
-
-
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDepthMask(GL_FALSE);
@@ -166,8 +176,6 @@ void display(void)
 	glColor4f(0, 0.8, 0.8, 0.5);
 	glutSolidCube(1.0);
 	
-	
-
 	glTranslatef(0, A, 0.0);
 	glColor4f(0.8, 0.8, 0.8, 0.9);
 	glScalef(0.9, 0.25, 0.9);
@@ -186,11 +194,9 @@ void display(void)
 	glColor4f(0.3, 0.3, 0.5, 1.0);
 	glLineWidth(5);
 	glutWireCube(1.0);
-
-
+	
 	glPopMatrix();
-	const int sizeMasKoordinati = 5010;
-	koordinati  *MasKoord[sizeMasKoordinati];
+	
 	for (int a=0; a<sizeMasKoordinati; a++)
 	{
 		MasKoord[a] = NULL;
@@ -198,18 +204,16 @@ void display(void)
 	int size = 0;
 	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
 	postroenieTrassi(MasKoord, size);
-
-	
-	
+	glLoadIdentity();
+	gluLookAt(X0, Y0 + 0.2, Z0,
+		X1, Y1 + 0.2, Z1,
+		0.0f, 1.0f, 0.0f);
 	glFlush();
 }
 
 
-
-
-
 void Timer(int value)
-{
+{ 
 	if ((A <= 0.3) && (k == 0))
 	{
 		A += 0.02;
@@ -220,6 +224,25 @@ void Timer(int value)
 		A -= 0.02;
 	}
 	if (A <- 0.3) k = 0;
+
+	int size = 0;
+	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
+	
+	
+	if  (loop1 < size - 2)
+	{
+		X0 = MasKoord[loop1]->x;
+		Y0 = MasKoord[loop1]->y;
+		Z0 = MasKoord[loop1]->z;
+
+		X1 = MasKoord[loop1 + 1]->x;
+		Y1 = MasKoord[loop1 + 1]->y;
+		Z1 = MasKoord[loop1 + 1]->z;
+	
+	}
+	loop1++;
+	
+
 	glutPostRedisplay();
 	glutTimerFunc(50, Timer, 0);
 }
@@ -235,7 +258,7 @@ int main(int argc, char** argv)
 	init();
 	glutReshapeFunc(reshape); //Установка функций, отвечающих за изменении формы окна
 	glutDisplayFunc(display);//Установка функций, отвечающих за рисование в окне 
-//	glutTimerFunc(1000, Timer, 0);
+	glutTimerFunc(1000, Timer, 0);
 	glutMainLoop();//Вход в главный цикл GLUT
 	
 	return 0;
