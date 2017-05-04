@@ -22,7 +22,7 @@ float A = 0.0;
 int k = 0;
 int loop1 = 0;
 double X0 = 0, Y0 = 0, Z0 = 0, X1 = 0, Y1 = 0, Z1 = 0;
-unsigned int textures[6];
+unsigned int textures[3];
 const int sizeMasKoordinati = 5010;
 koordinati  *MasKoord[sizeMasKoordinati];
 
@@ -30,7 +30,7 @@ koordinati  *MasKoord[sizeMasKoordinati];
 
 void LoadTextures()
 {
-	AUX_RGBImageRec *texture1 = auxDIBImageLoadA("nebo.bmp");
+	AUX_RGBImageRec *texture1 = auxDIBImageLoadA("nebo1.bmp");
 	glGenTextures(1, &textures[0]);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -44,6 +44,13 @@ void LoadTextures()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, texture2->sizeX, texture2->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, texture2->data);
+
+	AUX_RGBImageRec *texture3 = auxDIBImageLoadA("galka.bmp");
+	glGenTextures(1, &textures[2]);
+	glBindTexture(GL_TEXTURE_2D, textures[2]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, texture3->sizeX, texture3->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, texture3->data);
 	}
 
 
@@ -65,7 +72,7 @@ void reshape(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		gluLookAt(
-			0.0f, 0.0f, 8.0f,
+			0.0f, 700.0f,600.0f,
 			0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f);
 }
@@ -87,24 +94,14 @@ void display(void)
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	
-	glPushMatrix();
-	
-	glScalef(3, 3, 3);
-	glBegin(GL_QUADS);
-
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0f, 1.0f, -1.0f);          // Право верх квадрата (Верх)
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0f, 1.0f, -1.0f);          // Лево верх
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-1.0f, 1.0f, 1.0f);          // Лево низ
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(1.0f, 1.0f, 1.0f);          // Право низ
-	glEnd();
 		
-	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	
+	glPushMatrix();
 
+	glBindTexture(GL_TEXTURE_2D, textures[2]);
+	glScalef(2000, 0, 2000);
 	glBegin(GL_QUADS);
+	glColor3d(0.7, 0.9, 0.7);
 	glTexCoord2f(1.0, 1.0);
 	glVertex3f(1.0f, -1.0f, 1.0f);          // Верх право квадрата (Низ)
 	glTexCoord2f(0.0, 1.0);
@@ -114,67 +111,53 @@ void display(void)
 	glTexCoord2f(1.0, 0.0);
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
-		
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0f, -1.0f, -1.0f);          // Верх право квадрата (Зад)
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0f, -1.0f, -1.0f);          // Верх лево
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-1.0f, 1.0f, -1.0f);          // Низ лево
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(1.0f, 1.0f, -1.0f);          // Низ право
-	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glPopMatrix();
+	glPushMatrix();
+
+
+	glScalef(250, 0, 250);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+
 	glBegin(GL_QUADS);
+	glColor3d(0.7, 0.7, 0.7);
 	glTexCoord2f(1.0, 1.0);
-	glVertex3f(-1.0f, 1.0f, 1.0f);          // Верх право квадрата (Лево)
+	glVertex3f(1.0f, -1.0f, 1.0f);          // Верх право квадрата (Низ)
 	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0f, 1.0f, -1.0f);          // Верх лево
+	glVertex3f(-1.0f, -1.0f, 1.0f);          // Верх лево
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-1.0f, -1.0f, -1.0f);          // Низ лево
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(-1.0f, -1.0f, 1.0f);          // Низ право
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0f, 1.0f, -1.0f);          // Верх право квадрата (Право)
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(1.0f, 1.0f, 1.0f);          // Верх лево
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(1.0f, -1.0f, 1.0f);          // Низ лево
 	glTexCoord2f(1.0, 0.0);
 	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0f, 1.0f, 1.0f);          // Верх право квадрата (Перед)
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0f, 1.0f, 1.0f);          // Верх лево
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(-1.0f, -1.0f, 1.0f);          // Низ лево
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(1.0f, -1.0f, 1.0f);          // Низ право
-	glEnd();
+	glPopMatrix();
+	glPushMatrix();
 
-	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	GLUquadricObj *quadObj;
+	quadObj = gluNewQuadric();
+	gluQuadricTexture(quadObj, GL_TRUE);
+	gluQuadricDrawStyle(quadObj, GLU_FILL);
+	glColor3d(1, 1, 1);
+	glRotated(-90, 0, 1, 0);
+	glTranslated(0, 0, 0);
+	gluSphere(quadObj,1000, 20, 20);
+
 	glPopMatrix();
 	glPushMatrix();
 	
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDepthMask(GL_FALSE);
 	
-	glTranslatef(-2.5, -1, -0.5);
-	glScalef(1, 4, 1);
+	
+	glTranslatef(-245, 0, -245);
+	glScalef(10, 40, 10);
 	glColor4f(0, 0.8, 0.8, 0.5);
-	glutSolidCube(1.0);
+	glutSolidCube(10.0);
 	
 	glTranslatef(0, A, 0.0);
 	glColor4f(0.8, 0.8, 0.8, 0.9);
@@ -196,18 +179,22 @@ void display(void)
 	glutWireCube(1.0);
 	
 	glPopMatrix();
-	
+/*
 	for (int a=0; a<sizeMasKoordinati; a++)
 	{
 		MasKoord[a] = NULL;
 	}
 	int size = 0;
+
 	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
 	postroenieTrassi(MasKoord, size);
 	glLoadIdentity();
+
 	gluLookAt(X0, Y0 + 0.2, Z0,
 		X1, Y1 + 0.2, Z1,
 		0.0f, 1.0f, 0.0f);
+*/
+		
 	glFlush();
 }
 
@@ -244,7 +231,7 @@ void Timer(int value)
 	
 
 	glutPostRedisplay();
-	glutTimerFunc(50, Timer, 0);
+	glutTimerFunc(90, Timer, 0);
 }
 
 
