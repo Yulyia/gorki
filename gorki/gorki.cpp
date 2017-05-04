@@ -72,7 +72,7 @@ void reshape(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		gluLookAt(
-			0.0f, 700.0f,600.0f,
+			0.0f, 100.0f,400.0f,
 			0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f);
 }
@@ -116,19 +116,19 @@ void display(void)
 	glPushMatrix();
 
 
-	glScalef(250, 0, 250);
+	glScalef(250, 1, 250);
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 
 	glBegin(GL_QUADS);
 	glColor3d(0.7, 0.7, 0.7);
 	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0f, -1.0f, 1.0f);          // Верх право квадрата (Низ)
+	glVertex3f(1.0f, 1.0f, 1.0f);          // Верх право квадрата (Низ)
 	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0f, -1.0f, 1.0f);          // Верх лево
+	glVertex3f(-1.0f, 1.0f, 1.0f);          // Верх лево
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-1.0f, -1.0f, -1.0f);          // Низ лево
+	glVertex3f(-1.0f, 1.0f, -1.0f);          // Низ лево
 	glTexCoord2f(1.0, 0.0);
-	glVertex3f(1.0f, -1.0f, -1.0f);          // Низ право
+	glVertex3f(1.0f, 1.0f, -1.0f);          // Низ право
 	glEnd();
 
 	glPopMatrix();
@@ -154,10 +154,10 @@ void display(void)
 	glDepthMask(GL_FALSE);
 	
 	
-	glTranslatef(-245, 0, -245);
-	glScalef(10, 40, 10);
+	glTranslatef(-190, 101, -190);
+	glScalef(60, 200, 60);
 	glColor4f(0, 0.8, 0.8, 0.5);
-	glutSolidCube(10.0);
+	glutSolidCube(1.0);
 	
 	glTranslatef(0, A, 0.0);
 	glColor4f(0.8, 0.8, 0.8, 0.9);
@@ -172,13 +172,15 @@ void display(void)
 	glPopMatrix();
 	glPushMatrix();
 
-	glTranslatef(-2.5, -1, -0.5);
-	glScalef(1, 4, 1);
+	glTranslatef(-190, 101, -190);
+	glScalef(60, 200, 60);
 	glColor4f(0.3, 0.3, 0.5, 1.0);
 	glLineWidth(5);
 	glutWireCube(1.0);
 	
 	glPopMatrix();
+	glPushMatrix();
+
 /*
 	for (int a=0; a<sizeMasKoordinati; a++)
 	{
