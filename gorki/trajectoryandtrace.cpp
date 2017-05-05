@@ -43,7 +43,7 @@ void postroenieTrassi(koordinati *mass[], int size)
 	double BX1, BY1, BZ1, CX1, CY1, CZ1, AX1, AY1, AZ1, A1D0, DX1, DY1, DZ1, A1E0, A1B0;
 	double x = 0, y = 0, z = 0, x0 = 0, y0 = 0, z0 = 0, x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
 
-	AX0 = 0; AZ0 = 0; WidthTrace = 0.3; A0D0 = 0; DX0 = 0; DZ0 = 0;
+	AX0 = 0; AZ0 = 0; WidthTrace = 3.0; A0D0 = 0; DX0 = 0; DZ0 = 0;
 	A0E0 = 0; A0B0 = 0; BX0 = 0; BZ0 = 0; CX0 = 0; CZ0 = 0;
 	BX1 = 0; BZ1 = 0; CX1 = 0; CZ1 = 0; AX1 = 0; AZ1 = 0;
 	A1D0 = 0; DX1 = 0; DZ1 = 0; A1E0 = 0; A1B0 = 0;
@@ -75,7 +75,7 @@ void postroenieTrassi(koordinati *mass[], int size)
 		A0D0 = sqrt(DX0*DX0 + DY0*DY0);
 		if (A0D0 < 0.00004)
 		{
-			//A0D0 = 0.00004;
+			A0D0 = 0.00004;
 		}
 
 		//единичный вектор
@@ -99,7 +99,7 @@ void postroenieTrassi(koordinati *mass[], int size)
 
 		if (A1D0 < 0.00004)
 		{
-			//A1D0 = 0.00004;
+			A1D0 = 0.00004;
 		}
 
 		double A1E1X = (1 / A1D0) * DX1;

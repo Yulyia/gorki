@@ -19,7 +19,7 @@ using namespace std;
 
 
 float A = 0.0;
-int k = 0;
+int k = 0, size1;
 int loop1 = 0;
 double X0 = 0, Y0 = 0, Z0 = 0, X1 = 0, Y1 = 0, Z1 = 0;
 unsigned int textures[3];
@@ -72,8 +72,8 @@ void reshape(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		gluLookAt(
-			0.0f, 100.0f,400.0f,
-			0.0f, 0.0f, 0.0f,
+			0.0f, 200.0f,350.0f,
+			-50.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f);
 }
 
@@ -180,22 +180,13 @@ void display(void)
 	
 	glPopMatrix();
 	glPushMatrix();
-
-/*
-	for (int a=0; a<sizeMasKoordinati; a++)
-	{
-		MasKoord[a] = NULL;
-	}
-	int size = 0;
-
-	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
-	postroenieTrassi(MasKoord, size);
+	
+	
 	glLoadIdentity();
-
-	gluLookAt(X0, Y0 + 0.2, Z0,
-		X1, Y1 + 0.2, Z1,
+	gluLookAt(X0, Y0 + 5.2, Z0,
+		X1, Y1 + 5.2, Z1,
 		0.0f, 1.0f, 0.0f);
-*/
+	postroenieTrassi(MasKoord, size1);
 		
 	glFlush();
 }
@@ -213,12 +204,7 @@ void Timer(int value)
 		A -= 0.02;
 	}
 	if (A <- 0.3) k = 0;
-
-	int size = 0;
-	size = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
-	
-	
-	if  (loop1 < size - 2)
+	if  (loop1 < size1 - 2)
 	{
 		X0 = MasKoord[loop1]->x;
 		Y0 = MasKoord[loop1]->y;
@@ -233,12 +219,20 @@ void Timer(int value)
 	
 
 	glutPostRedisplay();
-	glutTimerFunc(90, Timer, 0);
+	glutTimerFunc(20, Timer, 0);
 }
 
 
 int main(int argc, char** argv)
 {
+	for (int a = 0; a<sizeMasKoordinati; a++)
+	{
+		MasKoord[a] = NULL;
+	}
+	size1 = 0;
+	size1 = sozdanieMassKoord(MasKoord, sizeMasKoordinati);
+
+
 	glutInit(&argc, argv);//Инициализация GLUT 
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB
 		| GLUT_DEPTH);//режим отображения информации
@@ -249,6 +243,5 @@ int main(int argc, char** argv)
 	glutDisplayFunc(display);//Установка функций, отвечающих за рисование в окне 
 	glutTimerFunc(1000, Timer, 0);
 	glutMainLoop();//Вход в главный цикл GLUT
-	
 	return 0;
 }
